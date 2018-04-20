@@ -27,7 +27,7 @@ namespace ApiPlugin
         private static Hashtable clients = new Hashtable();
 
         /// <summary>
-        /// GET轮询处理对象
+        /// GET轮询处理对象1
         /// </summary>
         private GetCycle GetCycle;
 
