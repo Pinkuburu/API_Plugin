@@ -27,7 +27,7 @@ namespace ApiPlugin
         private static Hashtable clients = new Hashtable();
 
         /// <summary>
-        /// GET轮询处理对象1
+        /// GET轮询处理对象
         /// </summary>
         private GetCycle GetCycle;
 
@@ -141,6 +141,7 @@ namespace ApiPlugin
                 if (count > 0)
                 {
                     string str = Encoding.UTF8.GetString(recvBuf, 0, count);
+
                     // 处理API消息
                     APISelect(client, str, key);
                 }
@@ -199,7 +200,6 @@ namespace ApiPlugin
 
             // 默认编码
             string Bianma = "GB2312";
-
             if (GetData.ContainsKey("utf"))
             {
                 if (GetData["utf"].ToString() == "1")
@@ -207,6 +207,7 @@ namespace ApiPlugin
                     Bianma = "UTF-8";
                 }
             }
+            GetData.Add("bianma", Bianma);
 
             string Data = string.Empty;
             try
@@ -227,6 +228,7 @@ namespace ApiPlugin
         /// <param name="msg"></param>
         /// <param name="msgCharSet"></param>
         /// <param name="key"></param>
+        /// <param name="mode"></param>
         private void SocketSendMsg(Socket client, string msg, string msgCharSet, string key, string mode = "UserMsg")
         {
             try
@@ -286,13 +288,13 @@ namespace ApiPlugin
                 else
                 {
                     bytes = Encoding.GetEncoding(msgCharSet).GetBytes(msg);
-                    MIME = "";
                 }
 
                 // 发送消息
                 SendHeader("", MIME, bytes.Length, client);
                 client.Send(bytes, 0, bytes.Length, SocketFlags.None);
                 client.Shutdown(SocketShutdown.Both);
+                clients.Remove(key);
             }
             catch
             {
@@ -384,9 +386,9 @@ namespace ApiPlugin
         /// 接口内容处理
         /// </summary>
         /// <param name="Data"></param>
-        /// <param name="bianma"></param>
+        /// <param name="Bianma"></param>
         /// <returns></returns>
-        public string Api(Hashtable Data, string bianma)
+        public string Api(Hashtable Data, string Bianma)
         {
             // 判断密钥是否正确
             if (!Data.ContainsKey("key"))
@@ -408,7 +410,7 @@ namespace ApiPlugin
             string sendtype = Data["sendtype"].ToString().ToLower();
 
             // 调用方法事件
-            return eventObj.CallAction(sendtype, Data, bianma);
+            return eventObj.CallAction(sendtype, Data);
 
             /*
             // 逐个判断请求类型
