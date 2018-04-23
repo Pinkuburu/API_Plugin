@@ -34,7 +34,7 @@ namespace ApiPlugin
         /// <summary>
         /// 机器人事件处理对象
         /// </summary>
-        private static BotEventHandle eventObj = new BotEventHandle();
+        public static BotEventHandle eventHandle;
 
         /// <summary>
         /// 默认读取缓冲区长度
@@ -61,6 +61,12 @@ namespace ApiPlugin
             if (server == null)
             {
                 ListenThreadRun();
+            }
+
+            // 创建事件处理对象
+            if (eventHandle == null)
+            {
+                eventHandle = new BotEventHandle(this);
             }
         }
 
@@ -184,14 +190,14 @@ namespace ApiPlugin
 
                 // 其他请求则报错
                 ShowMessage("Receive An Error(2) Data...", ConsoleColor.Red);
-                SocketSendMsg(client, "Qequest Error! Demo: Get /api?utf=1&key=iQQBot.com&sendtype=SendFriendMessage", "Gb2312", key);
+                SocketSendMsg(client, "Request Error! Demo: /api?utf=1&key=iQQBot.com&sendtype=SendFriendMessage", "Gb2312", key);
                 return;
             }
             int iStartPos = str.IndexOf(" HTTP/", 1);
             if (iStartPos == -1)
             {
                 ShowMessage("Receive An Error(3) Data...", ConsoleColor.Red);
-                SocketSendMsg(client, "Qequest Error! Demo: Get /api?utf=1&key=iQQBot.com&sendtype=SendFriendMessage", "Gb2312", key);
+                SocketSendMsg(client, "Request Error! Demo: /api?utf=1&key=iQQBot.com&sendtype=SendFriendMessage", "Gb2312", key);
                 return;
             }
 
@@ -207,15 +213,17 @@ namespace ApiPlugin
                     Bianma = "UTF-8";
                 }
             }
-            GetData.Add("bianma", Bianma);
 
+             // 处理请求
             string Data = string.Empty;
             try
             {
                 Data = Api(GetData, Bianma);
             }
-            catch
+            catch (Exception ex)
             {
+                // 输出调试代码 便与调试
+                Console.WriteLine(ex.ToString());
                 Data = "Request Data Error!";
             }
             SocketSendMsg(client, Data, Bianma, key);
@@ -395,7 +403,7 @@ namespace ApiPlugin
             {
                 return "Not Set key!";
             }
-            if (Data["key"].ToString() != RobotConfig.RobotKey)
+            if (HttpUtility.UrlDecode(Data["key"].ToString(), Encoding.GetEncoding(Bianma)) != RobotConfig.RobotKey)
             {
                 return "Key Error!";
             }
@@ -407,10 +415,10 @@ namespace ApiPlugin
             }
 
             // 获取事件名
-            string sendtype = Data["sendtype"].ToString().ToLower();
+            string sendtype = Data["sendtype"].ToString();
 
             // 调用方法事件
-            return eventObj.CallAction(sendtype, Data);
+            return eventHandle.CallAction(sendtype, Data, Bianma);
 
             /*
             // 逐个判断请求类型

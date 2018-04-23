@@ -7,9 +7,14 @@ using System.Threading;
 
 namespace ApiPlugin
 {
+    /// <summary>
+    /// GET轮询
+    /// </summary>
     public class GetCycle
     {
+        // API插件对象
         ApiPluginClass ApiPlugin = new ApiPluginClass();
+
         /// <summary>
         /// 初始化Get轮循
         /// </summary>
@@ -21,6 +26,7 @@ namespace ApiPlugin
             th.Start();
             Echo("Get循环模式启动成功！");
         }
+
         #region 循环体
         /// <summary>
         /// 循环体
@@ -60,6 +66,7 @@ namespace ApiPlugin
             }
         }
         #endregion
+
         /// <summary>
         /// Get方法执行函数
         /// </summary>
@@ -87,6 +94,7 @@ namespace ApiPlugin
                 Data = "数据出错！请返回检查！";
             }
         }
+
         #region 输出方法
         /// <summary>
         /// 输出方法
