@@ -38,7 +38,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -46,6 +48,7 @@
     <Compile Include="CallInterFace.cs" />
     <Compile Include="BotEventHandle.cs" />
     <Compile Include="GetCycle.cs" />
+    <Compile Include="Json.cs" />
     <Compile Include="Main.cs" />
   </ItemGroup>
   <ItemGroup>

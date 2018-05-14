@@ -1005,34 +1005,42 @@ namespace ApiPlugin
         /// 设置窗口
         /// </summary>
         public override void SetForm(){ }
+
         /// <summary>
         /// 插件名称
         /// </summary>
         public override String PluginName { get { return "API操作插件"; } }
+
         /// <summary>
         /// 插件唯一名称（英文+数字）
         /// </summary>
         public override String PluginKey { get { return "com.ImDong.ApiPlugins"; } }
+
         /// <summary>
         /// 作者
         /// </summary>
         public override string Author { get { return "ImDong"; } }
+
         /// <summary>
         /// 插件版本
         /// </summary>
         public override Version PluginVersion { get { return new Version(2018, 04, 18, 2058); } }
+
         /// <summary>
         /// 插件图片（暂时无效）
         /// </summary>
         public override Image PlugImage { get { return null; } }
+
         /// <summary>
         /// 插件说明
         /// </summary>
         public override string Description { get { return "青石"; } }
+
         /// <summary>
         /// 安装协议，不需要请留空
         /// </summary>
         public override string Agreement { get { return ""; } }
+
         /// <summary>
         /// 开发令牌(暂时无效)
         /// </summary>
